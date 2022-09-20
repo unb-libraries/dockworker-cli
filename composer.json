@@ -1,0 +1,25 @@
+{
+  "name": "unb-libraries/dockworker-cli",
+  "description": "Deploy and develop CLI applications via a consistent and unified workflow.",
+  "type": "library",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "unb-libraries/dockworker-base": "^5"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "UNB Libraries",
+      "email": "libsupport@unb.ca"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Dockworker\\": "./src/"
+    }
+  },
+  "bin": [
+    "bin/dockworker"
+  ]
+}
