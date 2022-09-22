@@ -10,7 +10,7 @@ use Dockworker\Robo\Plugin\Commands\DockworkerBaseCommands;
 class DockworkerCliCommands extends DockworkerLocalCommands {
 
   /**
-   * Stops this application's local run, deletes any persistent data, rebuilds its image, and reruns it.
+   * Builds and runs this application's locally, displaying all logs.
    *
    * @param string[] $options
    *   The array of available CLI options.
@@ -23,10 +23,11 @@ class DockworkerCliCommands extends DockworkerLocalCommands {
    *   Do not remove the existing assets before starting over.
    *
    * @command local:build-run
-   * @aliases start-over
+   * @aliases run
    * @throws \Exception
    */
-  public function startOver(array $options = ['no-cache' => FALSE, 'no-kill' => FALSE, 'no-rm' => FALSE]) {
+  public function buildRun(array $options = ['no-cache' => FALSE, 'no-kill' => FALSE, 'no-rm' => FALSE]) {
+    $this->checkRequiredEnvironmentVariables();
     if (!$options['no-kill']) {
       $this->io()->title("Killing application");
       $this->_exec('docker-compose kill');
@@ -36,32 +37,6 @@ class DockworkerCliCommands extends DockworkerLocalCommands {
       $this->setRunOtherCommand('local:rm');
     }
 
-    $start_command = 'local:build-run';
-    if ($options['no-cache']) {
-      $start_command = $start_command . ' --no-cache';
-    }
-    $this->setRunOtherCommand($start_command);
-  }
-
-  /**
-   * Builds and runs this application's locally, and displays its logs.
-   *
-   * @param string[] $options
-   *   The array of available CLI options.
-   *
-   * @option $no-cache
-   *   Do not use any cached steps in the build.
-   * @option $no-upstream-pull
-   *   Do not pull the upstream docker images before building.
-   * @option $no-build
-   *   Do not build any images before starting.
-   *
-   * @command local:build-run
-   * @aliases run
-   * @throws \Exception
-   */
-  public function buildRun(array $options = ['no-cache' => FALSE, 'no-upstream-pull' => FALSE, 'no-build' => FALSE]) {
-    $this->checkRequiredEnvironmentVariables();
     if (!$options['no-cache'] && !$options['no-upstream-pull']) {
       $this->setRunOtherCommand('docker:image:pull-upstream');
     }
