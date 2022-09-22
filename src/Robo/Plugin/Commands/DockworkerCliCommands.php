@@ -10,23 +10,33 @@ use Dockworker\Robo\Plugin\Commands\DockworkerBaseCommands;
 class DockworkerCliCommands extends DockworkerLocalCommands {
 
   /**
-   * Builds and runs this application's locally, displaying all logs.
+   * Builds and runs the application's locally, displaying all logs.
    *
    * @param string[] $options
    *   The array of available CLI options.
    *
+   * @option $no-build
+   *   Do not build the image before running it.
    * @option $no-cache
    *   Do not use any cached steps in the build.
    * @option $no-kill
    *   Do not use kill the container before starting over.
    * @option $no-rm
    *   Do not remove the existing assets before starting over.
+   * @option $no-upstream-pull
+   *   Do not pull the upstream docker images before building.
    *
    * @command local:build-run
    * @aliases run
    * @throws \Exception
    */
-  public function buildRun(array $options = ['no-cache' => FALSE, 'no-kill' => FALSE, 'no-rm' => FALSE]) {
+  public function buildRun(array $options = [
+    'no-build' => FALSE,
+    'no-cache' => FALSE,
+    'no-kill' => FALSE,
+    'no-rm' => FALSE,
+    'no-upstream-pull' => FALSE,
+  ]) {
     $this->checkRequiredEnvironmentVariables();
     if (!$options['no-kill']) {
       $this->io()->title("Killing application");
