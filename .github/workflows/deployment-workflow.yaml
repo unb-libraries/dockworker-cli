@@ -174,7 +174,7 @@ jobs:
         run: docker-compose pull --parallel --quiet
       -
         name: Start container and check logs for errors
-        run: vendor/bin/dockworker local:start --no-tail-logs --only-start --force-recreate
+        run: vendor/bin/dockworker run
 
   push-branch-tag-image-repository:
     name: Push Branch Tag to Repository
