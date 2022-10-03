@@ -178,8 +178,10 @@ jobs:
     name: Push Branch Tag to Repository
     runs-on: ubuntu-latest
     needs: [start-install-application]
+    env:
+      DEPLOY_BRANCHES: ${{ secrets.KUBE_DEPLOY_BRANCHES }}
     if:
-      contains(fromJSON(${{ secrets.KUBE_DEPLOY_BRANCHES }}), github.ref)
+      contains(fromJSON(${{ env.DEPLOY_BRANCHES }}), github.ref)
     steps:
       - uses: FranzDiebold/github-env-vars-action@v2.1.0
       -
