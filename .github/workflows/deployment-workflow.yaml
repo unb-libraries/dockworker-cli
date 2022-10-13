@@ -29,7 +29,7 @@ jobs:
     name: Notify Slack of Testing Start
     runs-on: ubuntu-latest
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2
       - uses: 8398a7/action-slack@v3
         with:
           status: custom
@@ -49,7 +49,7 @@ jobs:
     name: Set deployment image tag
     runs-on: ubuntu-latest
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2
       -
         name: Get current time
         uses: josStorer/get-current-time@v2.0.2
@@ -75,7 +75,7 @@ jobs:
     needs: [set-deployment-image-tag]
     runs-on: ubuntu-latest
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v3
       -
         name: Retrieve Image Tag
@@ -116,7 +116,7 @@ jobs:
     needs: [set-deployment-image-tag]
     runs-on: ubuntu-latest
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v3
       -
         name: Retrieve Image Tag
@@ -145,7 +145,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-image, update-docker-compose]
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v3
       - uses: unb-libraries/install-dockworker-composite-action@v2
       -
@@ -179,7 +179,7 @@ jobs:
     if:
       contains(fromJSON(${{ inputs.deploy-branches }}), github.ref)
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2
       -
         name: Login to GHCR
         run: echo $GH_CONTAINER_REGISTRY_TOKEN | docker login ghcr.io -u $GH_CONTAINER_REGISTRY_USER --password-stdin
@@ -210,7 +210,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [push-branch-tag-image-repository]
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2
       - uses: actions/checkout@v3
       - uses: unb-libraries/install-dockworker-composite-action@v2
       - uses: azure/setup-kubectl@v3
@@ -256,7 +256,7 @@ jobs:
     needs: [deploy-live]
     if: always()
     steps:
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - uses: FranzDiebold/github-env-vars-action@v2
       - uses: technote-space/workflow-conclusion-action@v3
       - name: Set environment variables
         run: |
