@@ -1,4 +1,4 @@
-name: Cron Service Deployment Workflow
+name: Deployment Workflow
 
 on:
   workflow_call:
@@ -183,14 +183,11 @@ jobs:
           GH_CONTAINER_REGISTRY_TOKEN: ${{secrets.GH_CONTAINER_REGISTRY_TOKEN}}
           GH_CONTAINER_REGISTRY_USER: ${{secrets.GH_CONTAINER_REGISTRY_USER}}
       -
-        name: Execute cron job with new changes
-        run: vendor/bin/dockworker cron:exec:deployed $CI_REF_NAME
+        name: Check container startup logs for errors
+        run: vendor/bin/dockworker logs:check:deployed $CI_REF_NAME
       -
-        name: Check cron logs for errors
-        run: vendor/bin/dockworker cron:logs:check:deployed $CI_REF_NAME
-      -
-        name: Write out cron logs
-        run: vendor/bin/dockworker cron:logs:deployed $CI_REF_NAME
+        name: Write out deployment logs
+        run: vendor/bin/dockworker logs:deployed $CI_REF_NAME
 
   slack-results:
     name: Notify Slack of Build Results
