@@ -176,12 +176,9 @@ jobs:
       -
         name: Set KubeCtl Conf Env
         run: echo "DOCKWORKER_KUBECTL_CONF=$KUBECONFIG" >> $GITHUB_ENV
-      -
-        name: Deploy image to cluster
-        run: vendor/bin/dockworker docker:image:deploy $CI_REF_NAME --use-tag $BUILD_IMAGE_TAG
-        env:
-          GH_CONTAINER_REGISTRY_TOKEN: ${{secrets.GH_CONTAINER_REGISTRY_TOKEN}}
-          GH_CONTAINER_REGISTRY_USER: ${{secrets.GH_CONTAINER_REGISTRY_USER}}
+      - name: Update Image In Kubernetes Deployment
+        run: |
+          kubectl set image "deployment/$CI_REPOSITORY_NAME_SLUG" "$CI_REPOSITORY_NAME_SLUG=ghcr.io/unb-libraries/$CI_REPOSITORY_NAME:$BUILD_IMAGE_TAG" --namespace="$CI_REF_NAME"
       -
         name: Check container startup logs for errors
         run: vendor/bin/dockworker logs:check:deployed $CI_REF_NAME
